@@ -14,7 +14,7 @@ The following table lists the available distributions and the methods available 
 
 | Distribution     | PDF | CDF | Quantile | RNG | Mean | Mode | Variance | Skewness | Kurtosis | Entropy |
 | :--------------- | :-: | :-: | :------: | :-: | :--: | :--: | :------: | :------: | :------: | :-----: |
-| Uniform          | x   | x   | x        | x   | x    | x    | x        | x        | x        | x       |
+| Uniform          |     |     |          |     | x    | x    | x        | x        | x        | x       |
 | Normal           |     |     |          |     | x    | x    | x        | x        | x        | x       |
 | Lognormal        |     |     | x        | x   | x    | x    | x        | x        | x        | x       |
 | Bivariate Normal |     |     | x        | x   | x    | x    | x        | x        | x        | x       |
