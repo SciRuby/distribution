@@ -4,6 +4,29 @@ module Distribution
     module Ruby_
       class << self
         include Math
+        # Beta random number generator
+        # == Arguments
+        # * +a+: alpha or k
+        # + +b+: theta or 1/beta
+        #
+        # Adapted from GSL-2.1, found in randist/beta.c
+        #
+        # ==References
+        # * https://www.gnu.org/software/gsl/manual/html_node/The-Beta-Distribution.html#The-Beta-Distribution
+        # * https://en.wikipedia.org/wiki/Beta_distribution
+        # Beta distribution probability density function
+        def rand(a,b)
+          x1 = Distribution::Gamma.rand(a, 1.0)
+          x2 = Distribution::Gamma.rand(b, 1.0)
+          x  = (x1 / (x1 + x2))
+          return x
+        end
+
+        # Return a Proc object which returns a random number drawn
+        # from the Beta random number generator for given (alpha,beta)
+        def rng(a,b)
+          -> { rand(a, b)}
+        end
         # Beta distribution probability density function
         #
         # Adapted from GSL-1.9 (apparently by Knuth originally), found in randist/beta.c
