@@ -4,6 +4,52 @@ module Distribution
     module Ruby_
       class << self
         include Math
+
+        # Gamma random number generator
+        # == Arguments
+        # * +a+: alpha or k
+        # + +b+: theta or 1/beta
+        #
+        # Adapted the function itself from GSL-2.1 in rng/gamma.c: gsl_ran_gamma
+        #
+        # ==References
+        # * http://www.gnu.org/software/gsl/manual/html_node/The-Gamma-Distribution.html
+        # * http://en.wikipedia.org/wiki/Gamma_distribution
+        def rand(a,b)
+          if a < 1
+            u = Distribution::Normal.rng.call
+            x = rand(1.0 + a, b) * u ** (1.0 / a)
+            return x
+          else
+            d = a - 1.0 / 3.0
+            c =  (1.0 / 3.0) / Math.sqrt(d)
+            v = 0
+            while 1
+
+              while v <= 0
+                x = Distribution::Normal.rng.call
+                v = 1.0 + c * x
+              end
+
+              v = v * v * v
+              u = Distribution::Uniform.rng.call
+              if u < 1 - 0.0331 * x * x * x * x
+                break
+              end
+              if log(u) < 0.5 * x * x + d * (1 - v + Math.log(v))
+                break
+              end
+            end
+            return b * d * v
+          end
+        end
+
+        # Return a Proc object which returns a random number drawn
+        # from the Gamma random number generator for given (alpha,beta)
+        def rng(a,b)
+          -> { rand(a, b)}
+        end
+
         # Gamma distribution probability density function
         #
         # If you're looking at Wikipedia's Gamma distribution page, the arguments for this pdf function correspond
