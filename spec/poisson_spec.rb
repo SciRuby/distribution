@@ -1,6 +1,36 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper.rb')
 include ExampleWithGSL
 describe Distribution::Poisson do
+  shared_examples_for 'poisson engine(with rng)' do
+    it 'should return correct rng' do
+      lambda_val = 2
+      exp_mean = 2
+      exp_seed = 1
+
+      # if seed = "1" / lambda_val = 2, rng is expected to all "2"
+      rng = @engine.rng(lambda_val, exp_seed)
+
+      samples = 100
+      sum = 0
+      samples.times do
+        v = rng.call
+        sum += v
+      end
+      mean = sum / samples
+      expect(mean.to_i).to 2
+    end
+  end
+
+  shared_examples_for 'gaussian engine(with rng)' do
+    it 'rng with a specified seed should be reproducible' do
+      seed = 1
+      rng1 = @engine.rng(3, 1, seed)
+      rng2 = @engine.rng(3, 1, seed)
+      expect((rng1.call)).to eq(rng2.call)
+    end
+  end
+
+
   shared_examples_for 'poisson engine' do
     it 'should return correct pdf' do
       if @engine.respond_to? :pdf
