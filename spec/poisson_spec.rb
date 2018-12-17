@@ -24,8 +24,8 @@ describe Distribution::Poisson do
   shared_examples_for 'gaussian engine(with rng)' do
     it 'rng with a specified seed should be reproducible' do
       seed = 1
-      rng1 = @engine.rng(3, 1, seed)
-      rng2 = @engine.rng(3, 1, seed)
+      rng1 = @engine.rng(3, seed)
+      rng2 = @engine.rng(3, seed)
       expect((rng1.call)).to eq(rng2.call)
     end
   end
