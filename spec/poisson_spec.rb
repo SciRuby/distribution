@@ -21,7 +21,7 @@ describe Distribution::Poisson do
     end
   end
 
-  shared_examples_for 'gaussian engine(with rng)' do
+  shared_examples_for 'poisson engine(with rng)' do
     it 'rng with a specified seed should be reproducible' do
       seed = 1
       rng1 = @engine.rng(3, seed)
