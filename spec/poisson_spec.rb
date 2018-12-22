@@ -17,13 +17,13 @@ describe Distribution::Poisson do
         sum += v
       end
       mean = sum / samples
-      expect(mean.to_i).to 2
+      expect(mean.to_i).to be_within(1e-10).of(2)
     end
   end
 
   shared_examples_for 'poisson engine(with rng)' do
     it 'rng with a specified seed should be reproducible' do
-      seed = 1
+      seed = rand(10)
       rng1 = @engine.rng(3, seed)
       rng2 = @engine.rng(3, seed)
       expect((rng1.call)).to eq(rng2.call)
