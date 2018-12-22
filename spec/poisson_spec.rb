@@ -3,12 +3,14 @@ include ExampleWithGSL
 describe Distribution::Poisson do
   shared_examples_for 'poisson engine(with rng)' do
     it 'should return correct rng' do
-      lambda_val = 2
-      exp_mean = 2
-      exp_seed = 1
+      # The expected rng output when 1 is set as the seed value
+      exp_means = [1, 2, 2, 3, 4, 5, 6, 7, 8, 9]
 
-      # if seed = "1" / lambda_val = 2, rng is expected to all "2"
-      rng = @engine.rng(lambda_val, exp_seed)
+      lambda_val = rand(10) + 1
+      exp_mean = exp_means[lambda_val - 1]
+      seed = 1
+
+      rng = @engine.rng(lambda_val, seed)
 
       samples = 100
       sum = 0
@@ -17,13 +19,13 @@ describe Distribution::Poisson do
         sum += v
       end
       mean = sum / samples
-      expect(mean.to_i).to be_within(1e-10).of(2)
+      expect(mean.to_i).to be_within(1e-10).of(exp_mean)
     end
   end
 
   shared_examples_for 'poisson engine(with rng)' do
     it 'rng with a specified seed should be reproducible' do
-      seed = rand(10)
+      seed = 1
       rng1 = @engine.rng(3, seed)
       rng2 = @engine.rng(3, seed)
       expect((rng1.call)).to eq(rng2.call)
